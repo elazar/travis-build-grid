@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+
+if (!isset($argv)) {
+    trigger_error('Please enable register_argc_argv in your PHP configuration', E_USER_ERROR);
+}
+
+if (count($argv) < 3) {
+    echo 'Usage: travis-build-grid configSection repo1 [... repoN]' . PHP_EOL . PHP_EOL .
+         'configSection is the key in the .travis.yml file that' . PHP_EOL .
+         'references a list of build versions; example: php' . PHP_EOL . PHP_EOL .
+         'repo1 is a Travis repository reference; example:' . PHP_EOL .
+         'elazar/travis-build-grid' . PHP_EOL;
+    exit(1);
+}
+
+set_include_path(implode(PATH_SEPARATOR, array(
+    get_include_path(),
+    __DIR__ . '/../vendor', // for bin/ when invoked from git repo clone
+    __DIR__ . '/../../..',  // for vendor/bin when installed via Composer
+)));
+require 'autoload.php';
+
+$configSection = $argv[1];
+$repos = array_slice($argv, 2);
+
+$runner = new \Elazar\TravisBuildGrid\Runner;
+$builder = $runner->getGridBuilder();
+$builder->setRepos($repos);
+$runner->run();

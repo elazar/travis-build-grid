@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Travis Build Grid</title>
+        <style type="text/css">
+            .passed { background-color: #006600; }
+            .failed { background-color: #cc0000; }
+            .passed, .failed { text-align: center; }
+            .passed a, .failed a { color: #ffffff; text-decoration: none; }
+            .repo { padding-right: 20px; text-align: right; }
+            .result { width: 60px; padding: 5px; border: 2px solid #000000; }
+            table { border-spacing: 0; border-collapse: collapse; margin-left: auto; margin-right: auto; }
+            footer { text-align: center; }
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td></td>
+                {% for version in versions %}
+                <th>{{ version }}</th>
+                {% endfor %}
+            </tr>
+            {% for repo, row in grid %}
+            <tr>
+                <td class="repo"><a href="https://travis-ci.org/{{ repo }}">{{ repo }}</a></td>
+                {% for version in versions %}
+                    {% if row[version] %}
+                    <td class="result {{ row[version].result }}">
+                        <a href="{{ row[version].url }}">&#1000{% if row[version].result == 'passed' %}4{% else %}8{% endif %};</a>
+                    </td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+    <footer>
+        <p>Created with <a href="https://github.com/elazar/travis-build-grid">TravisBuildGrid</a></p>
+    </footer>
+</html>
