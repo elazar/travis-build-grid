@@ -3,6 +3,8 @@
 Utility for rendering an HTML table of the last [Travis CI](https://travis-ci.org/)
 build results for multiple repositories and platform versions.
 
+[Demo](http://phergie.github.io/travis-build-grid.html)
+
 ## Installation
 
 Use [Composer](https://getcomposer.org/).
